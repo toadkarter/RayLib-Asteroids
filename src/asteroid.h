@@ -13,6 +13,9 @@ typedef enum AsteroidSize
 #define ASTEROID_ROTATION_SPEED_MIN 5
 #define ASTEROID_ROTATION_SPEED_MAX 240
 
+#define ASTEROID_SPEED_MIN 100
+#define ASTEROID_SPEED_MAX 300
+
 typedef struct Asteroid
 {
     bool active;
