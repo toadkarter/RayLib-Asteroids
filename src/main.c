@@ -43,8 +43,8 @@ void UpdateDrawFrame()
 
     for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
-        Asteroid* current_asteroid = &asteroids[i];
-        AsteroidUpdate(current_asteroid, frametime);
+        Asteroid* currentAsteroid = &asteroids[i];
+        AsteroidUpdate(currentAsteroid, frametime);
     }
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -59,8 +59,8 @@ void UpdateDrawFrame()
 
     for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
-        Asteroid* current_asteroid = &asteroids[i];
-        AsteroidDraw(current_asteroid);
+        Asteroid* currentAsteroid = &asteroids[i];
+        AsteroidDraw(currentAsteroid);
     }
 
     if (showAngleCone)

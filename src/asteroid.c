@@ -21,12 +21,12 @@ void AsteroidUpdate(Asteroid* asteroid, float deltatime)
         return;
     }
 
-    Vector2 current_position = asteroid->position;
-    Vector2 position_delta = Vector2Scale(asteroid->velocity, deltatime);
+    Vector2 currentPosition = asteroid->position;
+    Vector2 positionDelta = Vector2Scale(asteroid->velocity, deltatime);
 
     float rotation_delta = asteroid->rotationSpeed * deltatime;
 
-    asteroid->position = Vector2Add(current_position, position_delta);
+    asteroid->position = Vector2Add(currentPosition, positionDelta);
     asteroid->rotation += rotation_delta;
 }
 
@@ -43,8 +43,8 @@ void AsteroidDraw(Asteroid* asteroid)
 
 float GetAsteroidRadius(AsteroidSize size)
 {
-    const int size_scale = 16;
+    const int sizeScale = 16;
     int unit = (int)size;
 
-    return (float)(unit * size_scale);
+    return (float)(unit * sizeScale);
 }
