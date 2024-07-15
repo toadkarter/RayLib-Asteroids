@@ -10,6 +10,7 @@ Asteroid CreateAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size)
     asteroid.size = size;
     asteroid.rotation = (float)GetRandomValue(0, 360);
     asteroid.rotationSpeed = (float)GetRandomValue(ASTEROID_ROTATION_SPEED_MIN, ASTEROID_ROTATION_SPEED_MAX);
+    asteroid.creationTime = (float)GetTime();
 
     return asteroid;
 }
@@ -18,6 +19,12 @@ void AsteroidUpdate(Asteroid* asteroid, float deltatime)
 {
     if (!asteroid->active)
     {
+        return;
+    }
+
+    if (GetTime() > asteroid->creationTime + ASTEROID_LIFE)
+    {
+        asteroid->active = false;
         return;
     }
 

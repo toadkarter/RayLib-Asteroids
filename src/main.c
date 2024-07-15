@@ -10,11 +10,15 @@ const Vector2 screenCenter = {(float)screenWidth / 2, (float)screenHeight / 2};
 
 #define ASTEROIDS_MAX 64
 #define ASTEROID_RANDOM_ANGLE (30 * DEG2RAD)
+#define ASTEROID_DELAY 1.0f
+
 static AsteroidSize sizes[] = {ASTEROID_SMALL, ASTEROID_MEDIUM, ASTEROID_LARGE};
 static Asteroid asteroids[ASTEROIDS_MAX] = {0};
+static float lastAsteroidCreationTime = -1.0f;
 
 void UpdateDrawFrame(void);
 void AddAsteroid(Vector2 position, AsteroidSize size);
+Vector2 GetNextAsteroidPosition(void);
 
 // DEBUG
 bool showAngleCone = false;
@@ -40,6 +44,7 @@ int main()
 void UpdateDrawFrame()
 {
     float frametime = GetFrameTime();
+    float time = (float)GetTime();
 
     for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
@@ -47,10 +52,11 @@ void UpdateDrawFrame()
         AsteroidUpdate(currentAsteroid, frametime);
     }
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    if (time > lastAsteroidCreationTime + ASTEROID_DELAY)
     {
         int size_index = GetRandomValue(0, 2);
-        AddAsteroid(GetMousePosition(), sizes[size_index]);
+        AddAsteroid(GetNextAsteroidPosition(), sizes[size_index]);
+        lastAsteroidCreationTime = time;
     }
 
     BeginDrawing();
@@ -104,4 +110,31 @@ void AddAsteroid(Vector2 position, AsteroidSize size)
     {
         TraceLog(LOG_ERROR, "Failed to create asteroid because there were no inactive spots in the array");
     }
+}
+
+Vector2 GetNextAsteroidPosition(void)
+{
+    float padding = 128;
+    Vector2 result = {-padding, padding};
+
+    if (GetRandomValue(0, 1))
+    {
+        if (GetRandomValue(0, 1))
+        {
+            result.y = (float)screenWidth + padding;
+        }
+
+        result.x = (float)GetRandomValue((int)-padding, screenWidth + (int)padding);
+    }
+    else
+    {
+        if (GetRandomValue(0, 1))
+        {
+            result.y = (float)screenWidth + padding;
+        }
+
+        result.x = (float)GetRandomValue((int)-padding, screenHeight + (int)padding);
+    }
+
+    return result;
 }

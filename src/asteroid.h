@@ -16,6 +16,8 @@ typedef enum AsteroidSize
 #define ASTEROID_SPEED_MIN 100
 #define ASTEROID_SPEED_MAX 300
 
+#define ASTEROID_LIFE 10
+
 typedef struct Asteroid
 {
     bool active;
@@ -24,7 +26,7 @@ typedef struct Asteroid
     float rotation;
     float rotationSpeed;
     Vector2 velocity;
-
+    float creationTime;
 } Asteroid;
 
 Asteroid CreateAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);
