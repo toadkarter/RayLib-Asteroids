@@ -17,6 +17,7 @@ void UpdateDrawFrame(void);
 void AddAsteroid(Vector2 position, AsteroidSize size);
 
 // DEBUG
+bool showAngleCone = false;
 Vector2 line0[2];
 Vector2 line1[2];
 //
@@ -62,8 +63,11 @@ void UpdateDrawFrame()
         AsteroidDraw(current_asteroid);
     }
 
-    DrawLineV(line0[0], line0[1], RED);
-    DrawLineV(line1[0], line1[1], BLUE);
+    if (showAngleCone)
+    {
+        DrawLineV(line0[0], line0[1], RED);
+        DrawLineV(line1[0], line1[1], BLUE);
+    }
 
     EndDrawing();
 }
@@ -74,13 +78,16 @@ void AddAsteroid(Vector2 position, AsteroidSize size)
     Vector2 velocity = Vector2Subtract(screenCenter, position);
     velocity = Vector2Scale(Vector2Normalize(velocity), (float)GetRandomValue(ASTEROID_SPEED_MIN, ASTEROID_SPEED_MAX));
 
-    line0[0] = position;
-    line1[0] = position;
+    if (showAngleCone)
+    {
+        line0[0] = position;
+        line1[0] = position;
 
-    line0[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), -ASTEROID_RANDOM_ANGLE));
-    line1[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), ASTEROID_RANDOM_ANGLE));
+        line0[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), -ASTEROID_RANDOM_ANGLE));
+        line1[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), ASTEROID_RANDOM_ANGLE));
+    }
 
-    velocity = Vector2Rotate(velocity, (float)GetRandomValue(-ASTEROID_RANDOM_ANGLE, ASTEROID_RANDOM_ANGLE));
+    velocity = Vector2Rotate(velocity, (float)GetRandomValue((int)-ASTEROID_RANDOM_ANGLE, ASTEROID_RANDOM_ANGLE));
 
     for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
