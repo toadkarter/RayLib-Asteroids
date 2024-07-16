@@ -6,6 +6,7 @@
 static bool showDebugMenu = false;
 static bool showAsteroidCount = false;
 static bool showAngleCone = false;
+static bool debugUseCheckbox = false;
 static Vector2 line0[2] = {0};
 static Vector2 line1[2] = {0};
 
@@ -18,16 +19,27 @@ void ShowDebugMenu(void)
 
     if (showDebugMenu)
     {
-        Rectangle r = {10, (float)SCREEN_HEIGHT - 60, 180, 40};
-        if (GuiButton(r, "Toggle Asteroid Count"))
+        if (!debugUseCheckbox)
         {
-            showAsteroidCount = !showAsteroidCount;
-        }
+            Rectangle r = {10, SCREEN_HEIGHT - 80, 180, 60};
+            GuiToggle(r, "Show Asteroid Count", &showAsteroidCount);
 
-        r.x += 180 + 10;
-        if (GuiButton(r, "Show Asteroid Cone"))
+            r.x += 180 + 10;
+            GuiToggle(r, "Show Angle Cone", &showAngleCone);
+
+            r.x += 180 + 10;
+            GuiToggle(r, "Switch Menu Style", &debugUseCheckbox);
+        }
+        else
         {
-            showAngleCone = !showAngleCone;
+            Rectangle r = {10, SCREEN_HEIGHT - 40, 20, 20};
+            GuiCheckBox(r, "Show Asteroid Count", &showAsteroidCount);
+
+            r.y -= 30;
+            GuiCheckBox(r, "Show Angle Cone", &showAngleCone);
+
+            r.y -= 30;
+            GuiCheckBox(r, "Switch Menu Style", &debugUseCheckbox);
         }
     }
 }
