@@ -10,7 +10,7 @@ const Vector2 screenCenter = {(float)screenWidth / 2, (float)screenHeight / 2};
 #define NEARBLACK CLITERAL(Color){15, 15, 15, 255}
 
 #define ASTEROIDS_MAX 64
-#define ASTEROID_RANDOM_ANGLE (30 * DEG2RAD)
+#define ASTEROID_RANDOM_ANGLE (20 * DEG2RAD)
 #define ASTEROID_DELAY 1.0f
 
 static AsteroidSize sizes[] = {ASTEROID_SMALL, ASTEROID_MEDIUM, ASTEROID_LARGE};
@@ -22,7 +22,8 @@ void AddAsteroid(Vector2 position, AsteroidSize size);
 Vector2 GetNextAsteroidPosition(void);
 
 // DEBUG
-bool showAsteroidCount = true;
+bool showDebugMenu = false;
+bool showAsteroidCount = false;
 bool showAngleCone = false;
 Vector2 line0[2];
 Vector2 line1[2];
@@ -61,6 +62,11 @@ void UpdateDrawFrame()
         lastAsteroidCreationTime = time;
     }
 
+    if (IsKeyPressed(KEY_TAB))
+    {
+        showDebugMenu = !showDebugMenu;
+    }
+
     BeginDrawing();
 
     ClearBackground(NEARBLACK);
@@ -89,6 +95,21 @@ void UpdateDrawFrame()
         }
 
         DrawText(TextFormat("ASTEROIDS: %d", count), 20, 20, 32, WHITE);
+    }
+
+    if (showDebugMenu)
+    {
+        Rectangle r = {10, (float)screenHeight - 60, 180, 40};
+        if (GuiButton(r, "Toggle Asteroid Count"))
+        {
+            showAsteroidCount = !showAsteroidCount;
+        }
+
+        r.x += 180 + 10;
+        if (GuiButton(r, "Show Asteroid Cone"))
+        {
+            showAngleCone = !showAngleCone;
+        }
     }
 
     EndDrawing();
