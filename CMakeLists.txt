@@ -27,9 +27,11 @@ endif()
 
 add_executable(${PROJECT_NAME} src/main.c
         src/asteroid.h
-        src/asteroid.c)
+        src/asteroid.c
+        src/raygui.h
+        src/raygui.c)
 #set(raylib_VERBOSE 1)
-target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(${PROJECT_NAME} -lm raylib)
 
 # Web Configurations
 #if (${PLATFORM} STREQUAL "Web")

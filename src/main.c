@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <raymath.h>
+#include "raygui.h"
 #include "asteroid.h"
 
 const int screenWidth = 600;
