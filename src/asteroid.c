@@ -15,17 +15,17 @@ Asteroid CreateAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size)
     return asteroid;
 }
 
-void AsteroidUpdate(Asteroid* asteroid, float deltatime)
+bool AsteroidUpdate(Asteroid* asteroid, float deltatime)
 {
     if (!asteroid->active)
     {
-        return;
+        return false;
     }
 
     if (GetTime() > asteroid->creationTime + ASTEROID_LIFE)
     {
         asteroid->active = false;
-        return;
+        return false;
     }
 
     Vector2 currentPosition = asteroid->position;
@@ -35,6 +35,8 @@ void AsteroidUpdate(Asteroid* asteroid, float deltatime)
 
     asteroid->position = Vector2Add(currentPosition, positionDelta);
     asteroid->rotation += rotation_delta;
+
+    return true;
 }
 
 void AsteroidDraw(Asteroid* asteroid)

@@ -31,7 +31,7 @@ typedef struct Asteroid
 
 Asteroid CreateAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);
 
-void AsteroidUpdate(Asteroid* asteroid, float deltatime);
+bool AsteroidUpdate(Asteroid* asteroid, float deltatime);
 void AsteroidDraw(Asteroid* asteroid);
 
 float GetAsteroidRadius(AsteroidSize size);
