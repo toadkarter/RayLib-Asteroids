@@ -29,7 +29,10 @@ add_executable(${PROJECT_NAME} src/main.c
         src/asteroid.h
         src/asteroid.c
         src/raygui.h
-        src/raygui.c)
+        src/raygui.c
+        src/debug.c
+        src/debug.h
+        src/constants.h)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} -lm raylib)
 

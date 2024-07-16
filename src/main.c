@@ -2,16 +2,8 @@
 #include <raymath.h>
 #include "raygui.h"
 #include "asteroid.h"
-
-const int screenWidth = 600;
-const int screenHeight = 600;
-const Vector2 screenCenter = {(float)screenWidth / 2, (float)screenHeight / 2};
-
-#define NEARBLACK CLITERAL(Color){15, 15, 15, 255}
-
-#define ASTEROIDS_MAX 64
-#define ASTEROID_RANDOM_ANGLE (20 * DEG2RAD)
-#define ASTEROID_DELAY 1.0f
+#include "constants.h"
+#include "debug.h"
 
 static AsteroidSize sizes[] = {ASTEROID_SMALL, ASTEROID_MEDIUM, ASTEROID_LARGE};
 static Asteroid asteroids[ASTEROIDS_MAX] = {0};
@@ -21,17 +13,9 @@ void UpdateDrawFrame(void);
 void AddAsteroid(Vector2 position, AsteroidSize size);
 Vector2 GetNextAsteroidPosition(void);
 
-// DEBUG
-bool showDebugMenu = false;
-bool showAsteroidCount = false;
-bool showAngleCone = false;
-Vector2 line0[2];
-Vector2 line1[2];
-//
-
 int main()
 {
-    InitWindow(screenWidth, screenHeight, "Asteroids");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
 
     SetTargetFPS(60);
 
@@ -62,10 +46,7 @@ void UpdateDrawFrame()
         lastAsteroidCreationTime = time;
     }
 
-    if (IsKeyPressed(KEY_TAB))
-    {
-        showDebugMenu = !showDebugMenu;
-    }
+    ShowDebugMenu();
 
     BeginDrawing();
 
@@ -77,40 +58,16 @@ void UpdateDrawFrame()
         AsteroidDraw(currentAsteroid);
     }
 
-    if (showAngleCone)
+    int count = 0;
+    for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
-        DrawLineV(line0[0], line0[1], RED);
-        DrawLineV(line1[0], line1[1], BLUE);
-    }
-
-    if (showAsteroidCount)
-    {
-        int count = 0;
-        for (int i = 0; i < ASTEROIDS_MAX; i++)
+        if (asteroids[i].active)
         {
-            if (asteroids[i].active)
-            {
-                count++;
-            }
-        }
-
-        DrawText(TextFormat("ASTEROIDS: %d", count), 20, 20, 32, WHITE);
-    }
-
-    if (showDebugMenu)
-    {
-        Rectangle r = {10, (float)screenHeight - 60, 180, 40};
-        if (GuiButton(r, "Toggle Asteroid Count"))
-        {
-            showAsteroidCount = !showAsteroidCount;
-        }
-
-        r.x += 180 + 10;
-        if (GuiButton(r, "Show Asteroid Cone"))
-        {
-            showAngleCone = !showAngleCone;
+            count++;
         }
     }
+
+    ShowDebugVisualizations(count);
 
     EndDrawing();
 }
@@ -118,19 +75,11 @@ void UpdateDrawFrame()
 void AddAsteroid(Vector2 position, AsteroidSize size)
 {
     bool created = false;
-    Vector2 velocity = Vector2Subtract(screenCenter, position);
+    Vector2 velocity = Vector2Subtract(SCREEN_CENTER, position);
     velocity = Vector2Scale(Vector2Normalize(velocity), (float)GetRandomValue(ASTEROID_SPEED_MIN, ASTEROID_SPEED_MAX));
-
-    if (showAngleCone)
-    {
-        line0[0] = position;
-        line1[0] = position;
-
-        line0[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), -ASTEROID_RANDOM_ANGLE));
-        line1[1] = Vector2Add(position, Vector2Rotate(Vector2Scale(velocity, 10), ASTEROID_RANDOM_ANGLE));
-    }
-
     velocity = Vector2Rotate(velocity, (float)GetRandomValue((int)-ASTEROID_RANDOM_ANGLE, ASTEROID_RANDOM_ANGLE));
+
+    SetLastCone(position, velocity);
 
     for (int i = 0; i < ASTEROIDS_MAX; i++)
     {
@@ -158,19 +107,19 @@ Vector2 GetNextAsteroidPosition(void)
     {
         if (GetRandomValue(0, 1))
         {
-            result.y = (float)screenWidth + padding;
+            result.y = (float)SCREEN_WIDTH + padding;
         }
 
-        result.x = (float)GetRandomValue((int)-padding, screenWidth + (int)padding);
+        result.x = (float)GetRandomValue((int)-padding, SCREEN_WIDTH + (int)padding);
     }
     else
     {
         if (GetRandomValue(0, 1))
         {
-            result.y = (float)screenWidth + padding;
+            result.y = (float)SCREEN_WIDTH + padding;
         }
 
-        result.x = (float)GetRandomValue((int)-padding, screenHeight + (int)padding);
+        result.x = (float)GetRandomValue((int)-padding, SCREEN_HEIGHT + (int)padding);
     }
 
     return result;
