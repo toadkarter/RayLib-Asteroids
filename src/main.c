@@ -3,13 +3,17 @@
 #include "constants.h"
 #include "debug.h"
 #include "game_asteroids.h"
+#include "player.h"
+
+static Player player;
 
 void UpdateDrawFrame(void);
-Vector2 GetNextAsteroidPosition(void);
 
 int main()
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Asteroids");
+
+    player = (Player){.position = SCREEN_CENTER, .rotation = 270, .velocity = (Vector2){0}};
 
     SetTargetFPS(60);
 
@@ -25,12 +29,14 @@ int main()
 void UpdateDrawFrame()
 {
     int activeAsteroids = UpdateAsteroids();
+    PlayerUpdate(&player);
 
     BeginDrawing();
 
     ClearBackground(NEARBLACK);
 
-    DrawAsteroids();
+//    DrawAsteroids();
+    PlayerDraw(&player);
     ShowDebugVisualizations(activeAsteroids);
     ShowDebugMenu();
 

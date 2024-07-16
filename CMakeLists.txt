@@ -35,7 +35,9 @@ add_executable(${PROJECT_NAME} src/main.c
         src/debug.h
         src/constants.h
         src/game_asteroids.c
-        src/game_asteroids.h)
+        src/game_asteroids.h
+        src/player.c
+        src/player.h)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} -lm raylib)
 
