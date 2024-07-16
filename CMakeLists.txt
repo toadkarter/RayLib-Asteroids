@@ -10,9 +10,10 @@ find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   include(FetchContent)
   FetchContent_Declare(
-    raylib
-    DOWNLOAD_EXTRACT_TIMESTAMP OFF
-    URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
+          raylib
+          GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
+          GIT_TAG "master"
+          GIT_PROGRESS TRUE
   )
   FetchContent_GetProperties(raylib)
   if (NOT raylib_POPULATED) # Have we downloaded raylib yet?
