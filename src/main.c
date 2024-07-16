@@ -21,6 +21,7 @@ void AddAsteroid(Vector2 position, AsteroidSize size);
 Vector2 GetNextAsteroidPosition(void);
 
 // DEBUG
+bool showAsteroidCount = true;
 bool showAngleCone = false;
 Vector2 line0[2];
 Vector2 line1[2];
@@ -73,6 +74,20 @@ void UpdateDrawFrame()
     {
         DrawLineV(line0[0], line0[1], RED);
         DrawLineV(line1[0], line1[1], BLUE);
+    }
+
+    if (showAsteroidCount)
+    {
+        int count = 0;
+        for (int i = 0; i < ASTEROIDS_MAX; i++)
+        {
+            if (asteroids[i].active)
+            {
+                count++;
+            }
+        }
+
+        DrawText(TextFormat("ASTEROIDS: %d", count), 20, 20, 32, WHITE);
     }
 
     EndDrawing();
